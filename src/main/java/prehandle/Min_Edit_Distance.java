@@ -1,9 +1,73 @@
 package prehandle;
 
+
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 /**
  * Created by 张超 on 2017/9/21.
  */
 public class Min_Edit_Distance {
+    //源路径
+    private static String inputUrl;
+    //输出路径
+    private static String outputUrl;
+    //加载配置文件
+    static {
+        InputStream inputStream=Min_Edit_Distance.class.getClassLoader().getResourceAsStream("configuration.properties");
+        Properties prop = new Properties();
+        try {
+            prop.load(inputStream);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        inputUrl = prop.getProperty("inputUrl").trim();
+        outputUrl = prop.getProperty("outputUrl").trim();
+    }
+
+    //主方法
+    public  void start(){
+        Map<String, File> inputFiles=getAllPath(inputUrl);
+        for (String cFileName : inputFiles.keySet()) {
+            try {
+//                FileInputStream fis = new FileInputStream(inputFiles.get(cFileName));
+//                HWPFDocument doc = new HWPFDocument(fis);
+//                String doc1 = doc.getDocumentText();
+//                System.out.println(doc1);
+//                StringBuilder doc2 = doc.getText();
+//                System.out.println(doc2);
+//                Range rang = doc.getRange();
+//                String doc3 = rang.text();
+//                System.out.println(doc3);
+//                fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // 根据文件路径查找该路径下的所有文件并返回所有文件的路径
+    public static Map<String, File> getAllPath(String filePath) {
+        File file = new File(filePath);
+        Map<String, File> fileMap = new HashMap<String, File>();
+        if (file.exists()) {
+            File[] files = file.listFiles();
+            for (File file2 : files) {
+                fileMap.put(file2.getName(), file2);
+            }
+
+        }
+        return fileMap;
+
+    }
+    //编辑距离算法
     private static int cost = 0;
     public static int minEdit_distance(String source, String target)
     {
@@ -50,14 +114,14 @@ public class Min_Edit_Distance {
         return 1-(float)minEdit_distance(source,target)/this.max(source,target);
     }
 
-    public static void main(String[] args){
-
-        String source = "chin";
-        String target = "china";
-
-        System.out.println("最小编辑距离是："+minEdit_distance(source,target));
-        Min_Edit_Distance min=new Min_Edit_Distance();
-        float similarityRadio=1-(float)minEdit_distance(source,target)/min.max(source,target);
-        System.out.println("相似度是："+similarityRadio);
-    }
+//    public static void main(String[] args){
+//
+//        String source = "chin";
+//        String target = "china";
+//
+//        System.out.println("最小编辑距离是："+minEdit_distance(source,target));
+//        Min_Edit_Distance min=new Min_Edit_Distance();
+//        float similarityRadio=1-(float)minEdit_distance(source,target)/min.max(source,target);
+//        System.out.println("相似度是："+similarityRadio);
+//    }
 }
